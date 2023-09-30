@@ -6,7 +6,7 @@ var MIN_BASE_FEE = 0.0005;
 var DIFF_COEFFICIENT = 0.005;
 var HIVEPOOL = 25000;
 var SHIVEPOOL = 25000;
-const BRIDGE_USER = "kswap";
+const BRIDGE_USER = "uswap";
 let ssc;
 
 let COINGECKO_HIVE_URL = "https://api.coingecko.com/api/v3/simple/price?ids=hive&vs_currencies=usd";
@@ -597,7 +597,7 @@ $(window).bind("load", function () {
         try
         {
             updateMin();
-            bridgebal = await getBalances("kswap");
+            bridgebal = await getBalances("uswap");
             $("#hiveliquidity").text(bridgebal.HIVE.toFixed(3));
             $("#swaphiveliquidity").text(bridgebal["SWAP.HIVE"].toFixed(3));
             console.log("");
@@ -1036,7 +1036,7 @@ $(window).bind("load", function () {
                     if (currency !== "HIVE") {
                         hive_keychain.requestSendToken(
                             user,
-                            "kswap",
+                            "uswap",
                             amount,
                             memoMsg,
                             currency,
@@ -1062,7 +1062,7 @@ $(window).bind("load", function () {
                     else {
                         hive_keychain.requestTransfer(
                             user,
-                            "kswap",
+                            "uswap",
                             amount,
                             memoMsg,
                             currency,
@@ -1137,7 +1137,7 @@ $(window).bind("load", function () {
                                                 "contractAction": "transfer",
                                                 "contractPayload": {
                                                     "symbol": currency,
-                                                    "to": "kswap",
+                                                    "to": "uswap",
                                                     "quantity": amount,
                                                     "memo": memoMsg
                                                 }
@@ -1169,7 +1169,7 @@ $(window).bind("load", function () {
                                                     "transfer",
                                                     {
                                                         from: user,
-                                                        to: 'kswap',
+                                                        to: 'uswap',
                                                         amount: `${amount} HIVE`,
                                                         memoMsg,
                                                     }
@@ -1723,7 +1723,7 @@ const processHistory = async () => {
 const getHistory = async () => {
     var trxArray = [];
     try {
-        var resultData = await hive.api.getAccountHistoryAsync("kswap", -1, 50);
+        var resultData = await hive.api.getAccountHistoryAsync("uswap", -1, 50);
         if (resultData.length > 0) {
             resultData.forEach(function (tx) {
                 var op = tx[1].op;
@@ -1733,7 +1733,7 @@ const getHistory = async () => {
                 var trx_id = tx[1].trx_id;
 
                 if (op_type == "transfer") {
-                    if (op_value.from == "kswap" && op_value.to != "kswap.app") {
+                    if (op_value.from == "uswap" && op_value.to != "uswap.app") {
                         var trxTo = op_value.to;
                         var trxAmount = parseFloat(op_value.amount.replace("HIVE", "").trim());
                         var type = "Hive";
@@ -1754,7 +1754,7 @@ const getHistory = async () => {
                         if (jsonParse.contractName == "tokens"
                             && jsonParse.contractAction == "transfer"
                             && jsonParse.contractPayload.symbol == "SWAP.HIVE"
-                            && jsonParse.contractPayload.to != "kswap.app") {
+                            && jsonParse.contractPayload.to != "uswap.app") {
                             var trxTo = jsonParse.contractPayload.to;
                             var trxAmount = parseFloat(jsonParse.contractPayload.quantity) || 0.0;
                             var type = "Swap.Hive";
